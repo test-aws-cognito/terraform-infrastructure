@@ -6,9 +6,8 @@
 
 .terraform
 terraform.tfstate
-terraform.tfstate.backup
 .terraform.tfstate.lock.info
 
 # keys
-/modules/authorization/keys/resources/pr-01-key
+/modules/security/keys/resources/pr-01-key
 *.pem

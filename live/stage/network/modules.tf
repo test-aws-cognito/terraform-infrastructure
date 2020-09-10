@@ -1,5 +1,5 @@
 module "configuration" {
-  source = "..\/..\/..\/configuration"
+  source = "../../../configuration"
 }
 
 module "vpc" {
@@ -13,7 +13,7 @@ module "vpc" {
   public_subnets  = module.configuration.VPC_CONFIGURATION["public_subnet_name_cidrs"]
 
   tags = {
-    Project   = "test"
+    Project   = module.configuration.TAG_PROJECT
     Terraform = "true"
   }
 }
