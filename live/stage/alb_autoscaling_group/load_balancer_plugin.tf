@@ -24,15 +24,15 @@ resource "aws_lb_listener_rule" "autoscaling_alb_lr" {
   listener_arn = aws_lb_listener.autoscaling_alb_listener.arn
   priority     = 50000
 
-  //  action {
-  //    type = "authenticate-cognito"
-  //
-  //    authenticate_cognito {
-  //      user_pool_arn = tolist(data.aws_cognito_user_pools.application_user_pool.arns)[0]
-  //      user_pool_client_id = module.configuration.COGNITO["app_client_id"]
-  //      user_pool_domain = module.configuration.COGNITO["app_domain_name"]
-  //    }
-  //  }
+  action {
+    type = "authenticate-cognito"
+
+    authenticate_cognito {
+      user_pool_arn       = tolist(data.aws_cognito_user_pools.application_user_pool.arns)[0]
+      user_pool_client_id = module.configuration.COGNITO["app_client_id"]
+      user_pool_domain    = module.configuration.COGNITO["app_domain_name"]
+    }
+  }
 
   action {
     type             = "forward"
