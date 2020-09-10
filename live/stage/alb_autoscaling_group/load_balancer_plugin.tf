@@ -2,10 +2,6 @@ data "aws_cognito_user_pools" "application_user_pool" {
   name = module.configuration.COGNITO["user_pool_name"]
 }
 
-output "FOO" {
-  value = data.aws_cognito_user_pools.application_user_pool
-}
-
 resource "aws_lb_target_group" "autoscaling_target_group" {
   name     = "${module.configuration.TAG_PROJECT}-asg-tg"
   port     = 80

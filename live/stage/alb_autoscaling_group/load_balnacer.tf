@@ -4,9 +4,9 @@ resource "aws_security_group" "application_load_balancer" {
   vpc_id = module.vpc_data.terraform_vpc.id
 
   ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
+    description = "HTTPS"
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -31,10 +31,15 @@ resource "aws_lb" "autoscaling_alb" {
   }
 }
 
+data "aws_acm_certificate" "application_certificate" {
+  domain = module.configuration.SSL_CERTIFICATE_DOMAIN_NAME
+}
+
 resource "aws_lb_listener" "autoscaling_alb_listener" {
   load_balancer_arn = aws_lb.autoscaling_alb.arn
-  port              = "80"
-  protocol          = "HTTP"
+  port              = "443"
+  protocol          = "HTTPS"
+  certificate_arn   = data.aws_acm_certificate.application_certificate.arn
 
   default_action {
     type = "fixed-response"

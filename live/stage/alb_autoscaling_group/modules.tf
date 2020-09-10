@@ -18,6 +18,12 @@ module "vpc_data" {
   VPC_NAME                   = module.configuration.VPC_CONFIGURATION["vpc_name"]
 }
 
+module "ssl_certificate" {
+  source = "../../../modules/security/certificate"
+
+  DOMAIN_NAME = module.configuration.SSL_CERTIFICATE_DOMAIN_NAME
+}
+
 //module "bastion_host" {
 //  source = "../../../modules/services/bastion_host"
 //
