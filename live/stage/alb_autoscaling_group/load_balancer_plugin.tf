@@ -1,7 +1,3 @@
-data "aws_cognito_user_pools" "application_user_pool" {
-  name = module.configuration.COGNITO["user_pool_name"]
-}
-
 resource "aws_lb_target_group" "autoscaling_target_group" {
   name     = "${module.configuration.TAG_PROJECT}-asg-tg"
   port     = 80
@@ -29,7 +25,7 @@ resource "aws_lb_listener_rule" "autoscaling_alb_lr" {
 
     authenticate_cognito {
       user_pool_arn       = tolist(data.aws_cognito_user_pools.application_user_pool.arns)[0]
-      user_pool_client_id = module.configuration.COGNITO["app_client_id"]
+      user_pool_client_id = aws_cognito_user_pool_client.client.id
       user_pool_domain    = module.configuration.COGNITO["app_domain_name"]
     }
   }

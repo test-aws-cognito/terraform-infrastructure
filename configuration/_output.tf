@@ -56,7 +56,6 @@ output "ALB_NAME" {
 output "COGNITO" {
   value = {
     user_pool_name  = "test-user-pool"
-    app_client_id   = "51ljjpi2gpulufuk4g0e9ra9v5"
     app_domain_name = "kotu.auth.eu-central-1.amazoncognito.com"
   }
 }

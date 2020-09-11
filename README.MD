@@ -6,6 +6,11 @@ This approvals may be skipped in the manual.
 
 Some terraform `init` may need `yes` approval. It should be described in the manual.
 
+# Requirement
+
+- AWS account
+- Existing Cognito User Pool (User Pool Client not necessary - dynamical attachment)
+
 # First usage
 
 ## General configuration
