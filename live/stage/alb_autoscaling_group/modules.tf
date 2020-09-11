@@ -24,6 +24,12 @@ module "ssl_certificate" {
   DOMAIN_NAME = module.configuration.SSL_CERTIFICATE_DOMAIN_NAME
 }
 
+module "alb_data" {
+  source = "../../../modules/services/alb_data"
+
+  ALB_NAME = module.configuration.ALB_NAME
+}
+
 //module "bastion_host" {
 //  source = "../../../modules/services/bastion_host"
 //

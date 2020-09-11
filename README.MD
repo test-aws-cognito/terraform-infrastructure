@@ -1,3 +1,11 @@
+# Manual introduction
+
+Every terraform `apply` and `destroy` needs manual entering value `yes`
+(or -auto-approve parameter).
+This approvals may be skipped in the manual.
+
+Some terraform `init` may need `yes` approval. It should be described in the manual.
+
 # First usage
 
 ## General configuration
@@ -6,11 +14,15 @@
     
     It is impossible to use variables inside backend configuration so it have to be done manually.
     
+    Because AWS require S3 bucket names to be globally unique, state bucket name must be changed.
+    
 2. Find all `_variables.tf` files inside used module and check if proper values are set.
 
-    Set any unset values or not suitable default values
+    Set any unset values or not suitable default values.
     
-    Default values may be set in repository `_terraform.tfvars` files (mind the `_`)
+    Update state S3 bucket and state DynamoDB lock table names.
+    
+    Default values may be set in repository `_terraform.tfvars` files (mind the `_`).
 
 3. Before first usage comment `/global/backend/backend.tf` file as remote state container must be
 initialized first.
@@ -22,8 +34,6 @@ initialized first.
 1. `/global/backend/> terraform init`
 
 2. `/global/backend/> terraform apply`
-
-    Enter a value: yes
     
 3. Uncomment `/global/backend/backend.tf`
 
@@ -43,8 +53,14 @@ initialized first.
 
 4. `/global/backend/> terraform apply`
 
-    Enter a value: yes
-
 5. `/global/backend/> terraform destroy`
 
-    Enter a value: yes
+# Starting infrastructure
+
+Every terraform `apply` and `destroy` needs manual entering value `yes`
+
+1. `/live/stage/network/> terraform apply`
+
+2. `/live/stage/alb/> terraform apply`
+
+3. `/live/stage/alb_autoscaling_group/> terraform apply`

@@ -2,7 +2,7 @@
 // PROJECT
 ////////////////////////////////////////////////////////////////////////////////
 output "TAG_PROJECT" {
-  value = "terraform-cognito"
+  value = var.TAG_PROJECT
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -47,6 +47,10 @@ output "VPC_CONFIGURATION" {
     private_subnet_name_cidrs = ["10.0.11.0/24", "10.0.12.0/24", "10.0.13.0/24"]
     public_subnet_name_cidrs  = ["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]
   }
+}
+
+output "ALB_NAME" {
+  value = "${var.TAG_PROJECT}-alb"
 }
 
 output "COGNITO" {

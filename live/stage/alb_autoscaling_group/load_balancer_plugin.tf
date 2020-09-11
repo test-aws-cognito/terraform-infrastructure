@@ -21,7 +21,7 @@ resource "aws_lb_target_group" "autoscaling_target_group" {
 
 resource "aws_lb_listener_rule" "autoscaling_alb_lr" {
 
-  listener_arn = aws_lb_listener.autoscaling_alb_listener.arn
+  listener_arn = module.alb_data.ALB_LISTENER.arn
   priority     = 50000
 
   action {

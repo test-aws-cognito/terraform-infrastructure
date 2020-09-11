@@ -1,7 +1,7 @@
 resource "aws_security_group" "application_load_balancer" {
-  name = "${module.configuration.TAG_PROJECT}-alb-sg"
+  name = "${var.TAG_PROJECT}-alb-sg"
 
-  vpc_id = module.vpc_data.terraform_vpc.id
+  vpc_id = var.VPC_ID
 
   ingress {
     description = "HTTPS"
@@ -17,26 +17,30 @@ resource "aws_security_group" "application_load_balancer" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Project = var.TAG_PROJECT
+  }
 }
 
-resource "aws_lb" "autoscaling_alb" {
-  name               = "${module.configuration.TAG_PROJECT}-asg-lb"
+resource "aws_lb" "application_load_balancer" {
+  name               = var.ALB_NAME
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.application_load_balancer.id]
-  subnets            = module.vpc_data.terraform_subnets_ids_public.ids
+  subnets            = var.VPC_PUBLIC_SUBNETS_IDS
 
   tags = {
-    Project = module.configuration.TAG_PROJECT
+    Project = var.TAG_PROJECT
   }
 }
 
 data "aws_acm_certificate" "application_certificate" {
-  domain = module.configuration.SSL_CERTIFICATE_DOMAIN_NAME
+  domain = var.SSL_CERTIFICATE_DOMAIN_NAME
 }
 
-resource "aws_lb_listener" "autoscaling_alb_listener" {
-  load_balancer_arn = aws_lb.autoscaling_alb.arn
+resource "aws_lb_listener" "application_load_balancer_listener" {
+  load_balancer_arn = aws_lb.application_load_balancer.arn
   port              = "443"
   protocol          = "HTTPS"
   certificate_arn   = data.aws_acm_certificate.application_certificate.arn
