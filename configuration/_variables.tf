@@ -5,3 +5,7 @@ variable "REGION" {
 variable "TAG_PROJECT" {
   default = "terraform-cognito"
 }
+
+variable "COGNITO_PARTIAL_DOMAIN" {
+  default = "kotu-gft"
+}

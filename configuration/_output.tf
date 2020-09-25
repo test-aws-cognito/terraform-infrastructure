@@ -65,9 +65,10 @@ output "ALB_NAME" {
 
 output "COGNITO" {
   value = {
-    region          = var.REGION
-    user_pool_name  = "test-user-pool"
-    app_domain_name = "kotu.auth.eu-central-1.amazoncognito.com"
+    region             = var.REGION
+    user_pool_name     = "${var.TAG_PROJECT}-user-pool"
+    app_partial_domain = var.COGNITO_PARTIAL_DOMAIN
+    app_domain_name    = "${var.COGNITO_PARTIAL_DOMAIN}.auth.eu-central-1.amazoncognito.com"
   }
 }
 

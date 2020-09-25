@@ -72,12 +72,24 @@ As certificates have limits of uploads it is better to do not do it to often ;)
     
 **Every time you want to start and destroy infrastructure**
 
+Destroy in opposite direction...
+
 1. `/live/stage/network/> terraform apply`
 
 2. `/live/stage/key/> terraform apply`
 
 3. `/live/stage/postgresql/> terraform apply`
 
-4. `/live/stage/alb/> terraform apply`
+4. `/live/stage/cognito/> terraform apply`
 
-5. `/live/stage/alb_autoscaling_group/> terraform apply`
+    Enter value: your@mail.com
+    
+    On this mail temporary passwords for example users will be sent.
+    
+    Example users:  
+    - foo
+    - bar
+
+5. `/live/stage/alb/> terraform apply`
+
+6. `/live/stage/alb_autoscaling_group/> terraform apply`
