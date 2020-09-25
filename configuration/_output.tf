@@ -25,9 +25,15 @@ output "CREDENTIALS_PROFILE" {
 ////////////////////////////////////////////////////////////////////////////////
 output "EC2_FREE_TIER" {
   value = {
-    "eu-central-1" : "t2.micro",
-    "eu-west-3" : "t2.micro",
-    "eu-north-1" : "t3.micro",
+    "eu-central-1" = "t2.micro",
+    "eu-west-3"    = "t2.micro",
+    "eu-north-1"   = "t3.micro",
+  }
+}
+
+output "ELASTICACHE_FREE_TIER" {
+  value = {
+    "eu-central-1" = "cache.t2.micro",
   }
 }
 
@@ -36,6 +42,10 @@ output "EC2_FREE_TIER" {
 ////////////////////////////////////////////////////////////////////////////////
 output "SSL_CERTIFICATE_DOMAIN_NAME" {
   value = "*.amazonaws.com"
+}
+
+output "EC2_KEY_NAME" {
+  value = "pr-01-key"
 }
 
 output "VPC_CONFIGURATION" {
@@ -55,7 +65,19 @@ output "ALB_NAME" {
 
 output "COGNITO" {
   value = {
+    region          = var.REGION
     user_pool_name  = "test-user-pool"
     app_domain_name = "kotu.auth.eu-central-1.amazoncognito.com"
+  }
+}
+
+output "POSTGRESQL" {
+  value = {
+    instance_name = "${var.TAG_PROJECT}-postgresql"
+    db            = "postgres"
+    port          = 5432
+    user          = "postgres"
+    # Do not try this at home!
+    password = "pass"
   }
 }

@@ -64,8 +64,20 @@ initialized first.
 
 Every terraform `apply` and `destroy` needs manual entering value `yes`
 
+**Only once per whole project development**
+
+As certificates have limits of uploads it is better to do not do it to often ;)
+
+    `/live/stage/certificate/> terraform apply`
+    
+**Every time you want to start and destroy infrastructure**
+
 1. `/live/stage/network/> terraform apply`
 
-2. `/live/stage/alb/> terraform apply`
+2. `/live/stage/key/> terraform apply`
 
-3. `/live/stage/alb_autoscaling_group/> terraform apply`
+3. `/live/stage/postgresql/> terraform apply`
+
+4. `/live/stage/alb/> terraform apply`
+
+5. `/live/stage/alb_autoscaling_group/> terraform apply`

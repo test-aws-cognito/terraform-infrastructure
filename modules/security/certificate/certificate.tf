@@ -11,7 +11,7 @@ resource "tls_self_signed_cert" "example" {
     organization = "ACME Examples, Inc"
   }
 
-  validity_period_hours = 12
+  validity_period_hours = var.VALIDITY_PERIOD_HOURS
 
   allowed_uses = [
     "key_encipherment",
