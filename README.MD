@@ -9,6 +9,9 @@ Some terraform `init` may need `yes` approval. It should be described in the man
 # Requirement
 
 - AWS account
+- AWS certificate for domain `*.amazonaws.com`
+    - This certificate can be done with module `certificate`.
+      Do it only once as you may upload (very) limited number of certificates!
 
 # First usage
 
@@ -73,13 +76,17 @@ As certificates have limits of uploads it is better to do not do it to often ;)
 
 Destroy in opposite direction...
 
-1. `/live/stage/network/> terraform apply`
+1. Be sure you have valid certificate or create it (and do not destroy it!) with:
 
-2. `/live/stage/key/> terraform apply`
+    `/live/stage/certificate/> terraform apply`
 
-3. `/live/stage/postgresql/> terraform apply`
+2. `/live/stage/network/> terraform apply`
 
-4. `/live/stage/cognito/> terraform apply`
+3. `/live/stage/key/> terraform apply`
+
+4. `/live/stage/postgresql/> terraform apply`
+
+5. `/live/stage/cognito/> terraform apply`
 
     Enter value: your@mail.com
     
@@ -89,6 +96,48 @@ Destroy in opposite direction...
     - foo
     - bar
 
-5. `/live/stage/alb/> terraform apply`
+6. `/live/stage/alb/> terraform apply`
 
-6. `/live/stage/alb_autoscaling_group/> terraform apply`
+7. `/live/stage/alb_autoscaling_group/> terraform apply`
+
+8. Enter web site with following steps
+
+    - Get Load Balancer DNS
+        - (EC2 -> Load balancers -> Name: terraform-cognito-alb -> Copy DNS name)
+        
+    - Go to DNS through HTTPS (S at the end!)
+    
+    - Wait if Load Balancer or Spring Application is not ready yet
+    
+    - Accept manually custom certificate (it is self signed certificate)
+    
+    - Log in with username and password received from `cognito step` mail
+        - Mind the dot at the end of password as it is not part of the password! 
+
+# Summary
+
+This terraform stack combines:
+
+- Cognito
+
+- Application Load Balancer
+    - access protected by Cognito
+
+- Auto Scaling Group
+
+- Spring Boot Application
+    - on Auto Scaling Group
+    - protected by cognito
+    - joined with cognito groups and DB roles making more granular access
+    - cached with Elasticache (Redis)
+    
+- PostgreSQL DB
+
+- Elasticache (Redis)
+
+Access to ALB and Spring Boot application is protected by Cognito.
+Access to Spring Boot endpoints is protected by Roles.
+Roles are obtained as follows:
+- Spring Boot application reads Cognito User groups.
+- Then groups are joined with Roles from PostgreSQL.
+- Roles on PostgreSQL are joined (many-to-many) with Cognito groups.
