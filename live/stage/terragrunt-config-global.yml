@@ -1,0 +1,13 @@
+aws:
+  # AWS Region name (for application stack AND for terraform backend)
+  region: "eu-central-1"
+  credentials:
+    # Path to AWS credentials file - default value is for Windows (10?)
+    file: "%USERPROFILE%/.aws/credentials"
+    # In AWS credentials file you may have multiple profiles. If not then use default
+    profile: "default"
+
+terraform:
+  backend:
+    # Unique (in AWS Global scale!) S3 bucket (and DynamoDB table) prefix
+    prefix: "cognito-alb-sb-terraform"

@@ -8,6 +8,11 @@ terraform.tfvars
 terraform.tfstate
 terraform.tfstate.backup
 .terraform.tfstate.lock.info
+.terraform.lock.hcl
+
+# terragrunt generated files
+backend.tf
+provider.tf
 
 # keys
 /modules/security/keys/resources/pr-01-key
