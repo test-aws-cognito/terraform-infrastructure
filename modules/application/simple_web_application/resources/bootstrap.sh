@@ -22,4 +22,4 @@ docker run \
     --env APPLICATION_POSTGRESQL_DB=${postgresql_db} \
     --env APPLICATION_POSTGRESQL_USER=${postgresql_user} \
     --env APPLICATION_POSTGRESQL_PASSWORD=${postgresql_password} \
-    testawscognito/simple-web-app
+    testawscognito/simple-web-app:1.0.0

@@ -1,70 +1,73 @@
 # Manual introduction
 
-Every terraform `apply` and `destroy` needs manual entering value `yes`
+Every terragrunt `apply` and `destroy` needs manual entering value `yes`
 (or -auto-approve parameter).
 This approvals may be skipped in the manual.
 
-Some terraform `init` may need `yes` approval. It should be described in the manual.
+Some terragrunt `init` may need `yes` approval. It should be described in the manual.
+
+Terragrunt is creating Terraform backend out of the box.
+Remember to remove it if not needed any more.
 
 # Requirement
 
+- Terraform installed (last test on 0.14.5)
+- Terragrunt installed (last test on 0.27.0)
 - AWS account
 - AWS certificate for domain `*.amazonaws.com`
     - This certificate can be done with module `certificate`.
       Do it only once as you may upload (very) limited number of certificates!
+- (optional) AWS uploaded public/private key - only for bastion host. You may
+    - Skip this (upload mocked default key) - not really necessary to run this stack OR
+    - Replace mocked public key is in `modules/security/keys/resources/pr-01-key.pub` OR
+    - Replace key name in configuration and upload key to AWS manually (or use already uploaded).
 
 # First usage
 
 ## General configuration
 
-1. Find all `backend.tf` files and check configuration
-    
-    It is impossible to use variables inside backend configuration so it have to be done manually.
-    
-    Because AWS require S3 bucket names to be globally unique, state bucket name must be changed.
-    
-2. Find all `_variables.tf` files inside used module and check if proper values are set.
+There are two main configuration files:
 
-    Set any unset values or not suitable default values.
-    
-    Update state S3 bucket and state DynamoDB lock table names.
-    
-    Default values may be set in repository `_terraform.tfvars` files (mind the `_`).
+- terragrunt.hcl
+    - Main terragrunt configuration -
+      at the end it passes all configurations `inputs` to terraform modules
 
-3. Before first usage comment `/global/backend/backend.tf` file as remote state container must be
-initialized first.
+- terragrunt-config-global.yml
+    - Important configuration necessary for running
+
+Before running stack you MUST configure `terragrunt-config-global.yml`.
+Especially necessary variables to set are:
+    
+- `cognito.mail`
+    - On this mail Cognito user passwords will be sent.
+      Without it you won't be able to access web application.
+      
+- `terraform.backend.prefix`
+    - Prefix for AWS S3/DynamoDB Terraform backend.
+      It MUST be AWS-globally-unique as S3 buckets names requires.
+      
+- `aws.credentials.file`
+    - File with AWS Credentials.
+      By default it points to Windows 10 default location.
+      You must to create this file and point to it.
 
 ## Remote state container
 
 ### Remote state container creation
 
-1. `/global/backend/> terraform init`
-
-2. `/global/backend/> terraform apply`
-    
-3. Uncomment `/global/backend/backend.tf`
-
-4. `/global/backend/> terraform init`
-
-    Enter a value: yes
+It is automatically createt by Terragrunt on first `apply`
 
 ### Remote state container destruction (do on destroying whole project only!)
 
-1. Comment `/global/backend/backend.tf`
+You must manually remove S3 bucket and DynamoDB table:
 
-2. `/global/backend/> terraform init`
+- `${terraform.backend.prefix}-bucket` - S3 bucket
 
-    Enter a value: yes
-
-3. Uncomment `force_destroy` in `/global/backend/backend-infrastructure.tf`
-
-4. `/global/backend/> terraform apply`
-
-5. `/global/backend/> terraform destroy`
+- `${terraform.backend.prefix}-table` - DynamoDB table
 
 # Starting infrastructure
 
-Every terraform `apply` and `destroy` needs manual entering value `yes`
+Every terraform/terragrunt `apply` and `destroy` needs manual entering value `yes`
 
 **Only once per whole project development**
 
@@ -78,15 +81,27 @@ Destroy in opposite direction...
 
 1. Be sure you have valid certificate or create it (and do not destroy it!) with:
 
-    `/live/stage/certificate/> terraform apply`
+    `/live/stage/certificate/> terragrunt apply`
 
-2. `/live/stage/network/> terraform apply`
+2. `/live/stage/network/> terragrunt apply`
 
-3. `/live/stage/key/> terraform apply`
+3. Importing (EC2) key
+    
+    a. If you have your own, already imported to AWS key,
+    and you properly pointed it in `terragrunt-config-global.yml`
+    you may skip to next point. If not read further.
+    
+    b. If you do not want access EC2 just skip to (d)
+    
+    c. If you have your own public/private key pair you may replace default/mock public key:
+  
+    `modules/modules/security/keys/resources/pr-01-key.pub`
+     
+     d. `/live/stage/key/> terragrunt apply`
 
-4. `/live/stage/postgresql/> terraform apply`
+4. `/live/stage/postgresql/> terragrunt apply`
 
-5. `/live/stage/cognito/> terraform apply`
+5. `/live/stage/cognito/> terragrunt apply`
 
     Enter value: your@mail.com
     
@@ -96,9 +111,9 @@ Destroy in opposite direction...
     - foo
     - bar
 
-6. `/live/stage/alb/> terraform apply`
+6. `/live/stage/alb/> terragrunt apply`
 
-7. `/live/stage/alb_autoscaling_group/> terraform apply`
+7. `/live/stage/alb_autoscaling_group/> terragrunt apply`
 
 8. Enter web site with following steps
 

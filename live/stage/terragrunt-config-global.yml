@@ -1,3 +1,18 @@
+# !!! Very important
+cognito:
+  # On this mail passwords for example users will be sent.
+  # It is only method I know for receiving password after automatic user creation.
+  # Without setting this value to mail box accessible by you,
+  # you wont be able to access application.
+  #mail: "foo@example.com"
+  mail: "lukkot@gmail.com"
+
+# !!! Very important
+terraform:
+  backend:
+    # Unique (in AWS Global scale!) S3 bucket (and DynamoDB table) prefix
+    prefix: "cognito-alb-sb-terraform"
+
 aws:
   # AWS Region name (for application stack AND for terraform backend)
   region: "eu-central-1"
@@ -7,7 +22,10 @@ aws:
     # In AWS credentials file you may have multiple profiles. If not then use default
     profile: "default"
 
-terraform:
-  backend:
-    # Unique (in AWS Global scale!) S3 bucket (and DynamoDB table) prefix
-    prefix: "cognito-alb-sb-terraform"
+# Just some project name (e.g. to tag resources)
+project_name: "cognito-alb-sb"
+
+# If bastion host should be created with alb_autoscaling_group
+# Requires key generation (see README.MD)
+# 0 - no; 1 - yes
+bastion_host_flag: 0
