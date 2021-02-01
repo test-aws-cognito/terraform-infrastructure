@@ -1,12 +1,8 @@
-module "configuration" {
-  source = "../../../configuration"
-}
-
 module "cognito" {
   source = "../../../modules/security/cognito"
 
-  TAG_PROJECT              = module.configuration.TAG_PROJECT
-  COGNITO_USER_POOL_NAME   = module.configuration.COGNITO["user_pool_name"]
-  COGNITO_USER_POOL_DOMAIN = module.configuration.COGNITO["app_partial_domain"]
+  TAG_PROJECT              = var.PROJECT_TAG
+  COGNITO_USER_POOL_NAME   = var.COGNITO_USER_POOL_NAME
+  COGNITO_USER_POOL_DOMAIN = var.COGNITO_APP_PARTIAL_DOMAIN
   COGNITO_USERS_MAIL       = var.COGITO_USERS_MAIL
 }

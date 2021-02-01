@@ -1,19 +1,15 @@
-module "configuration" {
-  source = "../../../configuration"
-}
-
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = module.configuration.VPC_CONFIGURATION["vpc_name"]
-  cidr = module.configuration.VPC_CONFIGURATION["vpc_cidr"]
+  name = var.VPC_NAME
+  cidr = var.VPC_CIDR
 
-  azs             = module.configuration.VPC_CONFIGURATION["vpc_availability_zones"]
-  private_subnets = module.configuration.VPC_CONFIGURATION["private_subnet_name_cidrs"]
-  public_subnets  = module.configuration.VPC_CONFIGURATION["public_subnet_name_cidrs"]
+  azs             = var.VPC_AVAILABILITY_ZONES
+  private_subnets = var.VPC_PRIVATE_SUBNET_NAME_CIDRS
+  public_subnets  = var.VPC_PUBLIC_SUBNET_NAME_CIDRS
 
   tags = {
-    Project   = module.configuration.TAG_PROJECT
+    Project   = var.PROJECT_TAG
     Terraform = "true"
   }
 }

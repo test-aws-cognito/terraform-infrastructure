@@ -1,3 +1,0 @@
-module "configuration" {
-  source = "../../configuration"
-}
