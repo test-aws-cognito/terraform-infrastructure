@@ -4,8 +4,7 @@ cognito:
   # It is only method I know for receiving password after automatic user creation.
   # Without setting this value to mail box accessible by you,
   # you wont be able to access application.
-  #mail: "foo@example.com"
-  mail: "lukkot@gmail.com"
+  mail: "foo@example.com"
 
 # !!! Very important
 terraform:
