@@ -73,7 +73,7 @@ Every terraform/terragrunt `apply` and `destroy` needs manual entering value `ye
 
 As certificates have limits of uploads it is better to do not do it to often ;)
 
-    `/live/stage/certificate/> terraform apply`
+    `/live/stage/certificate/> terragrunt apply`
     
 **Every time you want to start and destroy infrastructure**
 
