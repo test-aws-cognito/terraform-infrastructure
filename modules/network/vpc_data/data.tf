@@ -4,8 +4,11 @@ data "aws_vpc" "terraform_vpc" {
   }
 }
 
-data "aws_subnet_ids" "terraform_public_subnets" {
-  vpc_id = data.aws_vpc.terraform_vpc.id
+data "aws_subnets" "terraform_public_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.terraform_vpc.id]
+  }
 
   filter {
     name   = "tag:Name"
@@ -13,8 +16,11 @@ data "aws_subnet_ids" "terraform_public_subnets" {
   }
 }
 
-data "aws_subnet_ids" "terraform_private_subnets" {
-  vpc_id = data.aws_vpc.terraform_vpc.id
+data "aws_subnets" "terraform_private_subnets" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.terraform_vpc.id]
+  }
 
   filter {
     name   = "tag:Name"

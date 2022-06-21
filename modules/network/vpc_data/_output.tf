@@ -3,9 +3,9 @@ output "terraform_vpc" {
 }
 
 output "terraform_subnets_ids_public" {
-  value = data.aws_subnet_ids.terraform_public_subnets
+  value = data.aws_subnets.terraform_public_subnets
 }
 
 output "terraform_subnets_ids_private" {
-  value = data.aws_subnet_ids.terraform_private_subnets
+  value = data.aws_subnets.terraform_private_subnets
 }

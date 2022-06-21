@@ -66,7 +66,7 @@ module "application_autoscaling_group" {
   EC2_TYPE     = var.EC2_FREE_TIER_TYPE
 
   VPC_ID          = module.vpc_data.terraform_vpc.id
-  VPC_SUBNETS_IDS = module.vpc_data.terraform_subnets_ids_public.ids
+  VPC_SUBNETS_IDS = module.vpc_data.terraform_subnets_ids_private.ids
 
   ASG_MIN_SIZE          = 1
   ASG_DESIRED_SIZE      = 2
